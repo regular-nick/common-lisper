@@ -1,3 +1,9 @@
+; node descriptions
+(defparameter *lr-desc* '(you are in the living-room. a wizard is snoring loudly on the couch))
+(defparameter *attic-desc* '(you are in the attic. there is a well in front of you.))
+(defparameter *well-desc* '(?????))
+(defparameter *garden-desc* '(you are in the garden. there is a giant welding torch in the corner.))
+
 ; nodes
 (defparameter *nodes* 
 `(
@@ -6,11 +12,6 @@
     (garden ,*garden-desc*)
     (well ,*well-desc*)
 ))
-; node descriptions
-(defparameter *lr-desc* '(you are in the living-room. a wizard is snoring loudly on the couch))
-(defparameter *attic-desc* '(you are in the attic. there is a well in front of you.))
-(defparameter *well-desc* '(?????))
-(defparameter *garden-desc* '(you are in the garden. there is a giant welding torch in the corner.))
 
 ; edges
 (defparameter *edges*
@@ -75,3 +76,13 @@
         (progn (setf *location* (car next)) 
                (look)) 
         '(you cannot go that way.))))
+
+
+(defun pickup (object)
+; check whether it's possible to pickup the object
+    (cond ((member object 
+                  (objects-at *location* *objects* *object-locations*))
+        (push (list object 'me) *object-locations*)
+        `(you are now carrying ,object))
+        (t `(you cannot get ,object)))
+    )
